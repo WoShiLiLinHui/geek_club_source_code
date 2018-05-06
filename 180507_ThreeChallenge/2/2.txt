@@ -1,0 +1,68 @@
+2.	知乎话题：所有递归都可以改写成循环吗？
+	浙大林锐博士的书中曾表示：所有的递归都可以改写成循环，而且认为递归的效率不高。
+	而王垠博士则认为递归比循环强。“递归的数据总是需要递归的程序来处理。虽然递归有时候表现为另外的形式，比如循环(loop)，但是“递归”这个概念比“循环”更广泛一些。有很多递归程序不能用循环来表达”，“而其实递归比循环表达能力强很多，而且效率几乎一样。有些程序比如解释器，不用递归的话基本没法完成。”————取自文章《王垠：怎样写一个解释器》
+	下面是一个循环嵌套递归的例子，尝试用树的层次结构理解代码然后选择一个选项补全它用循环实现的版本，要求新代码在，将注释行的recur()函数第二个参数替换成任意一个比2大比10小的int的情况下，都和源代码拥有等效输出：
+code 1：
+//**********递归版本*************
+#include <stdio.h>
+#include <stdlib.h>
+
+void recur(int, int);
+
+int main(int argc, char **argv)
+{
+    recur(1, 4); //<<<<<<<<<<<<<<<<
+    system("pause");
+    return 0;
+}   
+
+void recur(int i, int n)
+{
+    int j;
+    j = i;
+    for(j; j <= n; j++){
+        printf("%d",j);
+        recur(j + 1, n);}
+}
+//*******************************
+
+code 2：
+//*********循环版*************
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+void makestring(int, int);
+char str1[1024];
+char str2[1024];
+
+int main(int argc, char **argv)
+{
+    memset(str1, 0x00, sizeof (char) * 1024);
+	memset(str2, 0x00, sizeof (char) * 1024);
+    int k,n;
+	n=4;
+	for(k=1;k<=n;k++)
+		makestring(k,n);
+    puts(str1);
+	system("pause");
+    return 0;
+}   
+
+void makestring(int i, int n)
+{
+	if(i==1)
+        sprintf(str1, "%d", n);
+        //sprintf用于向其第一个参数指向的字符串填充格式化文本，之后的参数和printf类似
+	if(i>1)
+	{
+        strcpy(str2, str1);
+        //<<<<<<<<<<<<<< 在此处补一行代码
+	}
+}
+//*******************************
+
+A. sprintf(str1,"%s%s%d",n-i+1,str2);
+B. sprintf(str1,"%d%s%s",n-i+1,str2,str2); （正确答案）
+C. sprintf(str1,"\s\s\d",n-i+1,str2);
+D. sprintf(str1,"\d\s\s",n-i+1,str2,str2);
